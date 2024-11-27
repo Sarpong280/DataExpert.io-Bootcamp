@@ -1,0 +1,22 @@
+SELECT
+    MeterID,
+    CASE WHEN EXISTS (
+        SELECT 1 
+        FROM MeterReadings MR2 
+        WHERE MR2.MeterID = MR1.MeterID 
+        AND MR2.ReadingDate >= DATEADD(MONTH, -3, GETDATE())
+    ) THEN 'Yes' ELSE 'No' END AS Last_3_Months_Reading,
+    CASE WHEN EXISTS (
+        SELECT 1 
+        FROM MeterReadings MR2 
+        WHERE MR2.MeterID = MR1.MeterID 
+        AND MR2.ReadingDate >= DATEADD(MONTH, -6, GETDATE())
+    ) THEN 'Yes' ELSE 'No' END AS Last_6_Months_Reading,
+    CASE WHEN EXISTS (
+        SELECT 1 
+        FROM MeterReadings MR2 
+        WHERE MR2.MeterID = MR1.MeterID 
+        AND MR2.ReadingDate >= DATEADD(MONTH, -9, GETDATE())
+    ) THEN 'Yes' ELSE 'No' END AS Last_9_Months_Reading
+FROM 
+    MeterReadings MR1
